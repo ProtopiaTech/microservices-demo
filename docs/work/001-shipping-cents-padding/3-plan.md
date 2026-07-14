@@ -85,6 +85,6 @@ user-observable behaviour to smoke live.
 - [x] P3-02 (red-tests) table-driven TestQuoteString covering T-001..T-004 -> maps T-001, T-002, T-003, T-004
 
 ### Batch B2 — implementation: cents zero-padding (1 coder dispatch, serial)
-- [ ] P3-03 (implementation) zero-pad cents in Quote.String() (`%d` -> `%02d`) -> maps T-001, T-002, T-003, T-004
+- [x] P3-03 (implementation) zero-pad cents in Quote.String() (`%d` -> `%02d`) -> maps T-001, T-002, T-003, T-004
 
 e2e: n/a — the fix only corrects an internal display/log string; the client-facing gRPC shipping-quote money value is built from struct fields directly and is unchanged, so there is no user-observable behaviour to smoke live.
