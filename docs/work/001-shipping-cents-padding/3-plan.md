@@ -37,9 +37,16 @@ consolidation task is created for this unit.
 
 ### Phase 6 — E2E live smoke
 
-e2e: n/a — the fix only corrects an internal display/log string; the client-facing gRPC
-shipping-quote money value is built from struct fields directly and is unchanged, so there is no
-user-observable behaviour to smoke live.
+Originally planned `e2e: n/a` — the fix only corrects an internal display/log string; the
+client-facing gRPC shipping-quote money value is built from struct fields directly and is
+unchanged, so `Quote.String()` is not on any live request path and the fix is not observable live.
+
+At the user's request (a live cluster was available), a **regression smoke** was run instead: the
+branch's `shippingservice` image (`shippingservice:work-001`) was deployed to the `kind-boutique`
+cluster and the frontend browse → cart → checkout flow was driven end-to-end. Verdict **PASS** —
+no regression in the shipping/checkout flow; evidence in `docs/test/001-shipping-cents-padding/`.
+Note: this validates no-regression, **not** the cents-padding fix directly (nothing exercises
+`Quote.String()` at runtime).
 
 ## Tasks
 
@@ -87,4 +94,7 @@ user-observable behaviour to smoke live.
 ### Batch B2 — implementation: cents zero-padding (1 coder dispatch, serial)
 - [x] P3-03 (implementation) zero-pad cents in Quote.String() (`%d` -> `%02d`) -> maps T-001, T-002, T-003, T-004
 
-e2e: n/a — the fix only corrects an internal display/log string; the client-facing gRPC shipping-quote money value is built from struct fields directly and is unchanged, so there is no user-observable behaviour to smoke live.
+### Batch B3 — e2e live regression smoke (1 e2e-tester dispatch)
+- [x] P3-04 (e2e) regression smoke: deploy branch shippingservice, drive browse→cart→checkout -> evidence in docs/test/001-shipping-cents-padding/ (PASS)
+
+> Originally `e2e: n/a` (Quote.String() is not on the live request path); run as a regression smoke at the user's request since a cluster was available. Proves no regression in the shipping/checkout flow, not the cents-padding fix directly.
