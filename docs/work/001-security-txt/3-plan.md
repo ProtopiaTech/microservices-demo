@@ -151,10 +151,10 @@ User-observable change (a new public HTTP endpoint) — a real live smoke is req
 ## TODO (work-execute consumes this)
 
 ### Batch B0 — baseline (orchestrator only, no dispatch)
-- [ ] P3-01 (baseline) verify `go build ./...` and `go test ./...` green in `src/frontend`
+- [x] P3-01 (baseline) verify `go build ./...` and `go test ./...` green in `src/frontend`
 
 ### Batch B1 — seams (1 coder dispatch, serial)
-- [ ] P3-02 (seams) extract package-level `securityTxtHandler` + `registerSecurityTxtRoute`,
+- [x] P3-02 (seams) extract package-level `securityTxtHandler` + `registerSecurityTxtRoute`,
       wire into `main()` at the exact-path `baseUrl+"/.well-known/security.txt"` route,
       Content-Type-free/Contact-Expires-free placeholder body, build stays green
 
