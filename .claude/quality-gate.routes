@@ -1,0 +1,30 @@
+# quality-gate.routes — per-service routing for the quality gate (Online Boutique)
+# ---------------------------------------------------------------------------
+# Written by init-dev-kit. The gate looks at WHICH files changed and runs ONLY
+# the build/test commands of the service(s) that actually changed.
+#
+# FORMAT:  <path-prefix> :: <build_cmd> :: <test_cmd>
+#   - prefix matches when a changed file path STARTS WITH it.
+#   - commands are arbitrary shell, run via `eval` from the repo root.
+#   - each Go service is its OWN module (own go.mod), so we `cd` into it first;
+#     the leading `cd` is a shell builtin, so the gate's toolchain check is happy
+#     and still surfaces a missing `go`/`dotnet` as an actionable message.
+#
+# SCOPE (confirmed at setup): Go + C# services only — these are the services CI
+# unit-tests (.github/workflows/ci-pr.yaml) and the only ones that build/test
+# fast and hermetically without Docker/a cluster. Node/Python/Java (adservice)
+# changes are NOT gated here; they fall to each task's own executed acceptance
+# check (and the full skaffold e2e in docs/test/README.md).
+
+src/shippingservice/       :: cd src/shippingservice && go build ./...       :: cd src/shippingservice && go test ./...
+src/productcatalogservice/ :: cd src/productcatalogservice && go build ./... :: cd src/productcatalogservice && go test ./...
+src/frontend/              :: cd src/frontend && go build ./...              :: cd src/frontend && go test ./...
+src/checkoutservice/       :: cd src/checkoutservice && go build ./...       :: cd src/checkoutservice && go test ./...
+src/cartservice/           :: dotnet build src/cartservice/cartservice.sln   :: dotnet test src/cartservice/
+
+# SHARED CONTRACT — a change under protos/ affects every service. We verify it
+# by building/testing the gated consumers (composite, `&&`-chained from the repo
+# root using $CLAUDE_PROJECT_DIR so each `cd` is absolute). Note: the Go/C#
+# services vendor generated code under genproto/, so a raw .proto edit only takes
+# effect after running the service's genproto.sh — regenerate before relying on this.
+protos/ :: cd "$CLAUDE_PROJECT_DIR/src/shippingservice" && go build ./... && cd "$CLAUDE_PROJECT_DIR/src/productcatalogservice" && go build ./... && cd "$CLAUDE_PROJECT_DIR/src/frontend" && go build ./... && cd "$CLAUDE_PROJECT_DIR/src/checkoutservice" && go build ./... && dotnet build "$CLAUDE_PROJECT_DIR/src/cartservice/cartservice.sln" :: cd "$CLAUDE_PROJECT_DIR/src/shippingservice" && go test ./... && cd "$CLAUDE_PROJECT_DIR/src/productcatalogservice" && go test ./... && cd "$CLAUDE_PROJECT_DIR/src/frontend" && go test ./... && dotnet test "$CLAUDE_PROJECT_DIR/src/cartservice/"
