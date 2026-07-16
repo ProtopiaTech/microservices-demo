@@ -169,7 +169,7 @@ User-observable change (a new public HTTP endpoint) — a real live smoke is req
       T-006, T-007
 
 ### Batch B4 — consolidation (1 coder dispatch, serial)
-- [ ] P3-05 (consolidation) `gofmt` clean, full `go build ./... && go test ./...` green -> maps
+- [x] P3-05 (consolidation) `gofmt` clean, full `go build ./... && go test ./...` green -> maps
       T-001, T-002, T-003, T-004, T-005, T-006, T-007
 
 ### Batch B5 — e2e live smoke (1 e2e-tester dispatch)
