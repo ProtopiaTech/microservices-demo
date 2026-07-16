@@ -173,5 +173,5 @@ User-observable change (a new public HTTP endpoint) — a real live smoke is req
       T-001, T-002, T-003, T-004, T-005, T-006, T-007
 
 ### Batch B5 — e2e live smoke (1 e2e-tester dispatch)
-- [ ] P3-06 (e2e) live smoke per docs/test/README.md -> evidence + PASS summary.md in
+- [x] P3-06 (e2e) live smoke per docs/test/README.md -> evidence + PASS summary.md in
       docs/test/001-security-txt/
