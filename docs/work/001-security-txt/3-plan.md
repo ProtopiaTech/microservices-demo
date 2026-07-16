@@ -166,7 +166,7 @@ to `main` and never merges its own PR.
 - [x] P3-05 (implementation) fill in Content-Type + Contact/Expires body -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008, T-009
 
 ### Batch B4 — consolidation (1 coder dispatch, serial)
-- [ ] P3-06 (consolidation) DRY/edge cleanup, gofmt/go vet clean, final green
+- [x] P3-06 (consolidation) DRY/edge cleanup, gofmt/go vet clean, final green
 
 ### Batch B5 — e2e live smoke (1 e2e-tester dispatch)
 - [ ] P3-07 (e2e) live smoke per docs/test/README.md -> evidence + summary.md in docs/test/001-security-txt/
