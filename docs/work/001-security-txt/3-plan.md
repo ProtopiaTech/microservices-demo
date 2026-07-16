@@ -159,8 +159,8 @@ to `main` and never merges its own PR.
 - [x] P3-02 (seams) scaffold `security_txt.go` (Expires var, stub handler, registerSecurityTxt) and wire into `main.go`
 
 ### Batch B2 — red tests (1 coder dispatch, serial) [expected-red]
-- [ ] P3-03 (red-tests) core happy-path specs -> maps T-001, T-002, T-003, T-004, T-006
-- [ ] P3-04 (red-tests) edge/negative specs -> maps T-005, T-007, T-008, T-009
+- [x] P3-03 (red-tests) core happy-path specs -> maps T-001, T-002, T-003, T-004, T-006
+- [x] P3-04 (red-tests) edge/negative specs -> maps T-005, T-007, T-008, T-009
 
 ### Batch B3 — implementation: security.txt body (1 coder dispatch, serial)
 - [ ] P3-05 (implementation) fill in Content-Type + Contact/Expires body -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008, T-009
