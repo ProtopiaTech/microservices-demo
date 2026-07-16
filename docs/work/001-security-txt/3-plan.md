@@ -153,7 +153,7 @@ to `main` and never merges its own PR.
 ## TODO (work-execute consumes this)
 
 ### Batch B0 — baseline (orchestrator only, no dispatch)
-- [ ] P3-01 (baseline) verify `src/frontend` build+test green
+- [x] P3-01 (baseline) verify `src/frontend` build+test green
 
 ### Batch B1 — seams (1 coder dispatch, serial)
 - [ ] P3-02 (seams) scaffold `security_txt.go` (Expires var, stub handler, registerSecurityTxt) and wire into `main.go`
