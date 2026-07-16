@@ -173,9 +173,10 @@ func main() {
 }
 
 // securityTxtHandler serves the RFC 9116 security.txt endpoint.
-// TODO(P3-04): emit the compliant Contact/Expires body and Content-Type header.
 func securityTxtHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "TODO")
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	expires := time.Now().UTC().Add(365 * 24 * time.Hour).Format(time.RFC3339)
+	fmt.Fprintf(w, "Contact: mailto:security@example.com\nExpires: %s\n", expires)
 }
 
 // registerSecurityTxtRoute registers the exact-path security.txt route on r.

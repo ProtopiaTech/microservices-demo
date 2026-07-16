@@ -164,7 +164,7 @@ User-observable change (a new public HTTP endpoint) — a real live smoke is req
       T-002-T-006 red -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007
 
 ### Batch B3 — implementation (1 coder dispatch, serial)
-- [ ] P3-04 (implementation) emit compliant `Contact`/`Expires` body + `Content-Type` header,
+- [x] P3-04 (implementation) emit compliant `Contact`/`Expires` body + `Content-Type` header,
       T-002-T-006 go green (T-001/T-007 stay green) -> maps T-001, T-002, T-003, T-004, T-005,
       T-006, T-007
 
