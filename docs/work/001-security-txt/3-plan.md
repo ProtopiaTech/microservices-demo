@@ -156,7 +156,7 @@ to `main` and never merges its own PR.
 - [x] P3-01 (baseline) verify `src/frontend` build+test green
 
 ### Batch B1 — seams (1 coder dispatch, serial)
-- [ ] P3-02 (seams) scaffold `security_txt.go` (Expires var, stub handler, registerSecurityTxt) and wire into `main.go`
+- [x] P3-02 (seams) scaffold `security_txt.go` (Expires var, stub handler, registerSecurityTxt) and wire into `main.go`
 
 ### Batch B2 — red tests (1 coder dispatch, serial) [expected-red]
 - [ ] P3-03 (red-tests) core happy-path specs -> maps T-001, T-002, T-003, T-004, T-006
