@@ -1,0 +1,37 @@
+{
+  "$comment": "dev-kit quality gate. This repo uses ROUTED mode: see .claude/quality-gate.routes (one route per Go/C# service). The routes file takes over; QG_BUILD_CMD/QG_TEST_CMD below are only the fallback pair for changed files that match NO route — left empty here, so unrouted changes (Node/Python/Java) rely on each task's own acceptance check. No repo-wide 'model' pin on purpose: the dev-kit orchestrator runs on Opus as a per-session choice (/model opus), not forced on every session. Hook timeout is 600s: the Go modules and dotnet restore can exceed the 60s default on a cold first run, and a timed-out hook does NOT block — so the gate would silently skip on a teammate's first use.",
+  "_dev_kit_setup": {
+    "gate_mode": "routed",
+    "gate_scope": "Go services (shipping, productcatalog, frontend, checkout) + C# cartservice; protos/ composite route. Node/Python/Java not gated by choice.",
+    "rationale": "CI (.github/workflows/ci-pr.yaml) only unit-tests Go + C#; these build fast and hermetically without Docker/a cluster. Deployment tests are GKE/skaffold-based and unsuitable as a per-Stop hook.",
+    "e2e": "Full-stack via skaffold (see docs/test/README.md) — requires a k8s cluster (minikube/kind/GKE) + Docker."
+  },
+  "env": {
+    "QG_BUILD_CMD": "",
+    "QG_TEST_CMD": ""
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/quality-gate.sh\"",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/quality-gate.sh\"",
+            "timeout": 600
+          }
+        ]
+      }
+    ]
+  }
+}
