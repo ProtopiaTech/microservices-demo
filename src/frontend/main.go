@@ -159,6 +159,7 @@ func main() {
 	r.PathPrefix(baseUrl + "/static/").Handler(http.StripPrefix(baseUrl+"/static/", http.FileServer(http.Dir("./static/"))))
 	r.HandleFunc(baseUrl+"/robots.txt", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "User-agent: *\nDisallow: /") })
 	r.HandleFunc(baseUrl+"/_healthz", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "ok") })
+	registerSecurityTxtRoute(r, baseUrl)
 	r.HandleFunc(baseUrl+"/product-meta/{ids}", svc.getProductByID).Methods(http.MethodGet)
 	r.HandleFunc(baseUrl+"/bot", svc.chatBotHandler).Methods(http.MethodPost)
 
@@ -170,6 +171,19 @@ func main() {
 	log.Infof("starting server on %s:%s", addr, srvPort)
 	log.Fatal(http.ListenAndServe(addr+":"+srvPort, handler))
 }
+
+// securityTxtHandler serves the RFC 9116 security.txt endpoint.
+func securityTxtHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	expires := time.Now().UTC().Add(365 * 24 * time.Hour).Format(time.RFC3339)
+	fmt.Fprintf(w, "Contact: mailto:security@example.com\nExpires: %s\n", expires)
+}
+
+// registerSecurityTxtRoute registers the exact-path security.txt route on r.
+func registerSecurityTxtRoute(r *mux.Router, baseUrl string) {
+	r.HandleFunc(baseUrl+"/.well-known/security.txt", securityTxtHandler)
+}
+
 func initStats(log logrus.FieldLogger) {
 	// TODO(arbrown) Implement OpenTelemtry stats
 }
