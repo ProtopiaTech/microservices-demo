@@ -15,6 +15,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -26,9 +27,9 @@ import (
 var securityTxtExpires = time.Now().AddDate(1, 0, 0).Format(time.RFC3339)
 
 // securityTxtHandler serves the RFC 9116 security.txt file.
-// TODO(P3-05): write the real Contact/Expires body.
 func securityTxtHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	fmt.Fprintf(w, "Contact: mailto:security@example.com\nExpires: %s\n", securityTxtExpires)
 }
 
 // registerSecurityTxt registers the security.txt endpoint on r, rooted at base.

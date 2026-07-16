@@ -163,7 +163,7 @@ to `main` and never merges its own PR.
 - [x] P3-04 (red-tests) edge/negative specs -> maps T-005, T-007, T-008, T-009
 
 ### Batch B3 — implementation: security.txt body (1 coder dispatch, serial)
-- [ ] P3-05 (implementation) fill in Content-Type + Contact/Expires body -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008, T-009
+- [x] P3-05 (implementation) fill in Content-Type + Contact/Expires body -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008, T-009
 
 ### Batch B4 — consolidation (1 coder dispatch, serial)
 - [ ] P3-06 (consolidation) DRY/edge cleanup, gofmt/go vet clean, final green
