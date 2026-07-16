@@ -159,7 +159,7 @@ User-observable change (a new public HTTP endpoint) — a real live smoke is req
       Content-Type-free/Contact-Expires-free placeholder body, build stays green
 
 ### Batch B2 — red tests (1 coder dispatch, serial) [expected-red]
-- [ ] P3-03 (red-tests) add `security_txt_test.go` covering T-001..T-007 via httptest against a
+- [x] P3-03 (red-tests) add `security_txt_test.go` covering T-001..T-007 via httptest against a
       router built with `registerSecurityTxtRoute` (no main(), no gRPC dials); T-001/T-007 pass,
       T-002-T-006 red -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007
 
