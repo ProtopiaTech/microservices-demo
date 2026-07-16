@@ -1,0 +1,5 @@
+HTTP/1.1 405 Method Not Allowed
+Set-Cookie: shop_session-id=508ed9d7-657f-414c-9dcb-96bcdb363acc; Max-Age=172800
+Date: Thu, 16 Jul 2026 10:56:57 GMT
+Content-Length: 0
+

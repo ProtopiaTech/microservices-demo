@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Set-Cookie: shop_session-id=9dc4b13d-b0f2-48b7-81d5-79b731c7ba8b; Max-Age=172800
+Date: Thu, 16 Jul 2026 10:56:57 GMT
+Content-Length: 72
+
