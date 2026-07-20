@@ -130,7 +130,7 @@ per [docs/commit-conventions.md](../../commit-conventions.md); the unit ends wit
       Expires), register `/.well-known/security.txt` at literal root
 
 ### Batch B2 — red tests (1 coder dispatch, serial) [expected-red]
-- [ ] P3-03 (red-tests) all 8 scenarios in `security_txt_test.go`, genuinely red against the P3-02
+- [x] P3-03 (red-tests) all 8 scenarios in `security_txt_test.go`, genuinely red against the P3-02
       stub -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008
 
 ### Batch B3 — implementation (1 coder dispatch, serial)
