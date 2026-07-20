@@ -158,6 +158,7 @@ func main() {
 	r.HandleFunc(baseUrl+"/assistant", svc.assistantHandler).Methods(http.MethodGet)
 	r.PathPrefix(baseUrl + "/static/").Handler(http.StripPrefix(baseUrl+"/static/", http.FileServer(http.Dir("./static/"))))
 	r.HandleFunc(baseUrl+"/robots.txt", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "User-agent: *\nDisallow: /") })
+	r.HandleFunc("/.well-known/security.txt", securityTxtHandler)
 	r.HandleFunc(baseUrl+"/_healthz", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "ok") })
 	r.HandleFunc(baseUrl+"/product-meta/{ids}", svc.getProductByID).Methods(http.MethodGet)
 	r.HandleFunc(baseUrl+"/bot", svc.chatBotHandler).Methods(http.MethodPost)
@@ -170,6 +171,19 @@ func main() {
 	log.Infof("starting server on %s:%s", addr, srvPort)
 	log.Fatal(http.ListenAndServe(addr+":"+srvPort, handler))
 }
+
+// securityTxtBody returns the RFC 9116 security.txt content with a rolling
+// Expires timestamp (~6 months out, RFC 3339).
+func securityTxtBody() string {
+	expires := time.Now().UTC().AddDate(0, 6, 0).Format(time.RFC3339)
+	return fmt.Sprintf("Contact: mailto:security@example.com\nExpires: %s\n", expires)
+}
+
+func securityTxtHandler(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	fmt.Fprint(w, securityTxtBody())
+}
+
 func initStats(log logrus.FieldLogger) {
 	// TODO(arbrown) Implement OpenTelemtry stats
 }
