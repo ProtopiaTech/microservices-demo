@@ -4,11 +4,16 @@ The `e2e-tester` subagent follows THIS file to prove a change works against the 
 system. It is the contract: prerequisites, entry point, exact steps, expected results,
 troubleshooting. Evidence + `summary.md` go to `docs/test/NNN-<slug>/`.
 
-> **Current status: e2e is `n/a` for now.** The app only runs on a Kubernetes cluster via Skaffold
-> — there is no lightweight local run — and this repo does not yet pin a reliable local cluster. Until
-> someone stands one up and fills the per-service subsections below, `work-plan` should declare
-> `e2e: n/a — no running cluster wired yet` for units whose change is covered by build + unit tests.
-> The routed quality gate (`.claude/quality-gate.routes`) is the mechanical floor in the meantime.
+> **Current status: e2e is `n/a` by default, but the `frontend` path is now proven.** The app only
+> runs on a Kubernetes cluster via Skaffold — there is no lightweight local run — and this repo does
+> not pin a reliable local cluster for every service. Unit 001-security-txt did exercise a real live
+> smoke against a local `kind` cluster (`kind-boutique`): image rebuilt, `kind load`ed, rolled out,
+> port-forwarded, curled — see `docs/test/001-security-txt/`. So units touching **`frontend`** can
+> attempt a real live smoke against a local kind cluster per the subsection below, rather than
+> defaulting to `e2e: n/a`. Other services still need their subsections filled and a cluster
+> available; for those, `work-plan` should keep declaring `e2e: n/a — no running cluster wired yet`
+> for units covered by build + unit tests. The routed quality gate (`.claude/quality-gate.routes`)
+> is the mechanical floor in the meantime.
 
 ## Prerequisites (shared bring-up, once wired)
 - A Kubernetes cluster: local (`minikube start` / `kind create cluster`) or remote (GKE).
@@ -43,7 +48,12 @@ the frontend flows or via direct gRPC calls (`grpcurl`) against a port-forwarded
      Capture `02-cart.png`.
   3. Complete checkout with test card data → order-confirmation page with an order ID. Capture
      `03-order-confirmation.png`.
-- **Expected verdict:** PASS = browse → cart → checkout completes with no 5xx and correct totals.
+  4. Curl the well-known security endpoint: `curl -isS http://localhost:8080/.well-known/security.txt`
+     → `200`, `Content-Type: text/plain; charset=utf-8`, a `Contact:` line, and exactly one future
+     RFC 3339 `Expires:` line. Capture the raw response to a text file (it's an HTTP resource, not a
+     page, so a curl transcript stands in for the screenshot).
+- **Expected verdict:** PASS = browse → cart → checkout completes with no 5xx and correct totals, and
+  `/.well-known/security.txt` returns the expected headers and body.
 
 ## Troubleshooting
 - Pods stuck `Pending` → cluster lacks resources; give minikube/kind more CPU/memory.
