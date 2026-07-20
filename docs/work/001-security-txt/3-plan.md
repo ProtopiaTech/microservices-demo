@@ -123,10 +123,10 @@ per [docs/commit-conventions.md](../../commit-conventions.md); the unit ends wit
 ## TODO (work-execute consumes this)
 
 ### Batch B0 — baseline (orchestrator only, no dispatch)
-- [ ] P3-01 (baseline) verify `go build ./...` + `go test ./...` green in `src/frontend`
+- [x] P3-01 (baseline) verify `go build ./...` + `go test ./...` green in `src/frontend`
 
 ### Batch B1 — seams (1 coder dispatch, serial)
-- [ ] P3-02 (seams) add `securityTxtHandler` STUB (placeholder body, no real Content-Type/Contact/
+- [x] P3-02 (seams) add `securityTxtHandler` STUB (placeholder body, no real Content-Type/Contact/
       Expires), register `/.well-known/security.txt` at literal root
 
 ### Batch B2 — red tests (1 coder dispatch, serial) [expected-red]
