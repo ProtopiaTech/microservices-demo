@@ -134,7 +134,7 @@ per [docs/commit-conventions.md](../../commit-conventions.md); the unit ends wit
       stub -> maps T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008
 
 ### Batch B3 — implementation (1 coder dispatch, serial)
-- [ ] P3-04 (implementation) replace stub with RFC-conformant body (Contact + dynamic Expires) +
+- [x] P3-04 (implementation) replace stub with RFC-conformant body (Contact + dynamic Expires) +
       headers, required-only, literal-root, method-unrestricted, T-001..T-008 red -> green -> maps
       T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008
 
