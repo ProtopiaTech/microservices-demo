@@ -1,0 +1,31 @@
+{
+  "$comment": "NO repo-wide model pin on purpose: a 'model' key here would force EVERY session in this repo onto that model (translations, quick questions, chores — not just dev-kit pipeline runs), needlessly inflating token use. The dev-kit orchestrator SHOULD run on Opus, but that's a per-session choice the developer makes (/model opus, or --model / ANTHROPIC_MODEL) when starting a pipeline run — see the dev-kit skill's Model policy. Worker subagents are unaffected: the pipeline picks their model per dispatch (Sonnet for a lightweight unit, Opus for a standard one, decided at the end of research). QG_BUILD_CMD = what compiles/type-checks/lints; QG_TEST_CMD = how the suite runs — the MECHANICAL FLOOR, enforced regardless of any prompt. Fill them for THIS repo (init-dev-kit sets them from the interview, python-project-init from the uv stack; keep them in sync with CLAUDE.md -> Commands). Leave a command empty to skip that phase; leave BOTH empty (multi-language repo, no single command) and the gate no-ops — verification then falls to each task's own acceptance check. Narrow QG_WATCH_PATHS (space-separated) so the gate only fires when relevant dirs change. MONOREPO: for a polyglot repo with no single command, do NOT pick one service and freeze it — instead ship .claude/quality-gate.routes (see quality-gate.routes.example) mapping each service's path-prefix to its own build/test commands; the gate then runs ONLY the services that changed. QG_BUILD_CMD/QG_TEST_CMD become the fallback pair for changed files that match no route. HOOK TIMEOUT: both gate hooks carry \"timeout\": 600 (seconds) because Claude Code kills a command hook after 60s by default and a COLD first run of a real build (dependency restore, toolchain/distribution downloads) easily exceeds that — and a timed-out hook does NOT block, so the gate would silently skip exactly on a teammate's first use. Size it to the repo's slowest cold route (CI job timings are a good proxy).",
+  "env": {
+    "QG_BUILD_CMD": "",
+    "QG_TEST_CMD": ""
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/quality-gate.sh\"",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/quality-gate.sh\"",
+            "timeout": 600
+          }
+        ]
+      }
+    ]
+  }
+}

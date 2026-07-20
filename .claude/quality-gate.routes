@@ -1,0 +1,42 @@
+# quality-gate.routes — per-service routing for Online Boutique (12 services).
+# Written by init-dev-kit. Each command is cited to the repo's own build/CI files.
+# The gate runs ONLY the service(s) whose files changed. Format:
+#     <path-prefix> :: <build_cmd> :: <test_cmd>
+# NOTE: each command must START WITH a real executable (the gate pre-checks the first
+# word as a toolchain). Commands that need to `cd` into a service dir are therefore
+# wrapped in `sh -c '...'` — do not start a route command with `(`.
+# Unrouted changes (docs/, kubernetes-manifests/, terraform/, helm-chart/, kustomize/)
+# match no route and are left to each task's own acceptance check.
+
+# --- Go services (go build + go test) — .github/workflows/ci-pr.yaml "Go Unit Tests" ---
+src/frontend/              :: sh -c 'cd src/frontend && go build ./...'              :: sh -c 'cd src/frontend && go test ./...'
+src/checkoutservice/       :: sh -c 'cd src/checkoutservice && go build ./...'       :: sh -c 'cd src/checkoutservice && go test ./...'
+src/productcatalogservice/ :: sh -c 'cd src/productcatalogservice && go build ./...' :: sh -c 'cd src/productcatalogservice && go test ./...'
+src/shippingservice/       :: sh -c 'cd src/shippingservice && go build ./...'       :: sh -c 'cd src/shippingservice && go test ./...'
+
+# --- C# / .NET 10 — ci-pr.yaml "C# Unit Tests": dotnet test src/cartservice/ ---
+src/cartservice/ :: dotnet build src/cartservice/cartservice.sln :: dotnet test src/cartservice/
+
+# --- Java / Gradle (adservice) — no unit tests in CI; assemble compiles the sources.
+# Invoked via `bash gradlew` because gradlew is tracked non-executable in git (./gradlew
+# fails on a fresh clone).
+src/adservice/ :: sh -c 'cd src/adservice && bash gradlew --no-daemon assemble' ::
+
+# --- Node.js — syntax check via `node --check` on each .js file; no test suite.
+# NOTE: `npm ci` is NOT used — the pinned native deps (@google-cloud/profiler via node-pre-gyp)
+# fail to build on current Node, which would make the gate permanently red. node --check is fast,
+# hermetic, and needs no install. Run `npm ci` manually when you actually need the deps.
+src/currencyservice/ :: sh -c 'for f in src/currencyservice/*.js; do node --check "$f" || exit 1; done' ::
+src/paymentservice/  :: sh -c 'for f in src/paymentservice/*.js; do node --check "$f" || exit 1; done' ::
+
+# --- Python — syntax compile (fast, hermetic, no network); services ship no unit tests.
+# NOTE: chosen over `pip install -r requirements.txt` on every Stop, which would be slow
+# and pollute the global environment. compileall catches syntax/parse errors service-wide.
+src/emailservice/             :: python3 -m compileall -q src/emailservice ::
+src/recommendationservice/    :: python3 -m compileall -q src/recommendationservice ::
+src/loadgenerator/            :: python3 -m compileall -q src/loadgenerator ::
+src/shoppingassistantservice/ :: python3 -m compileall -q src/shoppingassistantservice ::
+
+# --- Shared gRPC contract (protos/) — verified by rebuilding its Go consumers (fast composite).
+# A change here regenerates stubs for every service; the Go builds catch contract breaks quickly.
+protos/ :: sh -c 'cd src/frontend && go build ./... && cd ../checkoutservice && go build ./... && cd ../productcatalogservice && go build ./... && cd ../shippingservice && go build ./...' ::
