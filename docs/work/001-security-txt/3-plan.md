@@ -139,7 +139,7 @@ per [docs/commit-conventions.md](../../commit-conventions.md); the unit ends wit
       T-001, T-002, T-003, T-004, T-005, T-006, T-007, T-008
 
 ### Batch B4 — consolidation (1 coder dispatch, serial)
-- [ ] P3-05 (consolidation) DRY body-builder helper, final `go build`/`go test` green
+- [x] P3-05 (consolidation) DRY body-builder helper, final `go build`/`go test` green
 
 ### Batch B5 — e2e live smoke (1 e2e-tester dispatch) [REQUIRED — no n/a fallback]
 - [ ] P3-06 (e2e) live smoke per docs/test/README.md -> PASS summary.md + evidence in

@@ -171,10 +171,17 @@ func main() {
 	log.Infof("starting server on %s:%s", addr, srvPort)
 	log.Fatal(http.ListenAndServe(addr+":"+srvPort, handler))
 }
+
+// securityTxtBody returns the RFC 9116 security.txt content with a rolling
+// Expires timestamp (~6 months out, RFC 3339).
+func securityTxtBody() string {
+	expires := time.Now().UTC().AddDate(0, 6, 0).Format(time.RFC3339)
+	return fmt.Sprintf("Contact: mailto:security@example.com\nExpires: %s\n", expires)
+}
+
 func securityTxtHandler(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	expires := time.Now().UTC().AddDate(0, 6, 0).Format(time.RFC3339)
-	fmt.Fprintf(w, "Contact: mailto:security@example.com\nExpires: %s\n", expires)
+	fmt.Fprint(w, securityTxtBody())
 }
 
 func initStats(log logrus.FieldLogger) {
