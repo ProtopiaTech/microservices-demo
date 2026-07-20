@@ -142,5 +142,5 @@ per [docs/commit-conventions.md](../../commit-conventions.md); the unit ends wit
 - [x] P3-05 (consolidation) DRY body-builder helper, final `go build`/`go test` green
 
 ### Batch B5 — e2e live smoke (1 e2e-tester dispatch) [REQUIRED — no n/a fallback]
-- [ ] P3-06 (e2e) live smoke per docs/test/README.md -> PASS summary.md + evidence in
+- [x] P3-06 (e2e) live smoke per docs/test/README.md -> PASS summary.md + evidence in
       docs/test/001-security-txt/

@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Set-Cookie: shop_session-id=a58b718d-cbf3-4842-9d71-157cb61986c0; Max-Age=172800
+Date: Mon, 20 Jul 2026 12:43:01 GMT
+Content-Length: 67
+
+Contact: mailto:security@example.com
+Expires: 2027-01-20T12:43:01Z
